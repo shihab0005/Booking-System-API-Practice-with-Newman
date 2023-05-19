@@ -1,0 +1,404 @@
+{
+	"info": {
+		"_postman_id": "f9069e07-bab3-4833-91e7-ed6db3ddda7a",
+		"name": "BookingSystem",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19668042",
+		"_collection_link": "https://universal-station-461441.postman.co/workspace/MyFirstAPI~2ebe8b0e-4957-4bd1-8c55-76075db04297/collection/19668042-f9069e07-bab3-4833-91e7-ed6db3ddda7a?action=share&creator=19668042&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "CreateToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData=JSON.parse(responseBody);\r",
+							"console.log(jsonData.accessToken)\r",
+							"\r",
+							"pm.test(\"Successfully Generated Token\",()=>{\r",
+							"    pm.response.to.have.status(201);\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomString = Math.random().toString(26).substring(3,9);\r",
+							"\r",
+							"const name=\"S\"+randomString+\"Khan\";\r",
+							"const email=\"S\"+randomString+\"ed@gmail.com\";\r",
+							"pm.environment.set(\"name\",name);\r",
+							"pm.environment.set(\"email\",email);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clientName\":\"${{name}}\",\r\n    \"clientEmail\":\"${{email}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api-clients/",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api-clients",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BooksStatus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status Ok\",()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/status",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListOfBooks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successfully Given List Of books\",()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetSingleBooks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonBooks= JSON.parse(responseBody);\r",
+							" console.log(jsonBooks.id)\r",
+							"pm.environment.set(\"bookId\",jsonBooks.id);\r",
+							"\r",
+							"pm.test(\"Successfully Get Details of Single Book\",()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/books/4",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"books",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OrderBooks",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomString = Math.random().toString(26).substring(3,9);\r",
+							"\r",
+							"const customerName=\"SKK\"+randomString+\"02\";\r",
+							"\r",
+							"pm.environment.set(\"customerName\",customerName);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const Order = JSON.parse(responseBody);\r",
+							"pm.test(\"Successfully Order A  Book\",()=>{\r",
+							"    pm.response.to.have.status(201);\r",
+							"})\r",
+							"pm.environment.set(\"Order_Id\",Order.orderId);\r",
+							"// console.log(\"OOOOO->\",Order.orderId);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"bookId\":\"3\",\r\n    \"customerName\" :\"{{$randomFirstName}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllOrders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const allOrders = JSON.parse(responseBody);\r",
+							"console.log(allOrders)\r",
+							"\r",
+							"pm.test(\"Successfully Show All Orders\",()=>{\r",
+							"     pm.response.to.have.status(200);\r",
+							"    \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/orders",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SingleOrderDetails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successfully Show Single Order Details\",()=>{\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/orders/{{Order_Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"{{Order_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateYourOrder",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomString = Math.random().toString(26).substring(3,9);\r",
+							"\r",
+							"const customerName= \"Order\"+randomString+\"uu\";\r",
+							"pm.environment.set(\"cName\",customerName)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successfully Order update\",()=>{\r",
+							"    pm.response.to.have.status(204);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \r\n      \"customerName\": \"{{cName}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/orders/{{Order_Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"{{Order_Id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteOrder",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successfully Delete update\",()=>{\r",
+							"    pm.response.to.have.status(204);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/orders/{{Order_Id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"orders",
+						"{{Order_Id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "b095f44c6f2ce913aad7cd2c23a933bc2b33b43a989b842249527e236d39de18",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://simple-books-api.glitch.me",
+			"type": "string"
+		}
+	]
+}
