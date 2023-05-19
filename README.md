@@ -1,11 +1,15 @@
 
 # Booking_System_API_Testing_Newman
 
-A brief description of what this project does and who it's for
 
 ## Technology used:
 - Postman
 - NewMan
+
+## Screenshots
+
+![App Screenshot](https://github.com/shihab0005/Booking-System-API-Practice-with-Newman/blob/main/Capture1.PNG?raw=true)
+![App Screenshot](https://github.com/shihab0005/Booking-System-API-Practice-with-Newman/blob/main/Capture2.PNG?raw=true)
 
 ## Prerequisite:
 - Jdk
